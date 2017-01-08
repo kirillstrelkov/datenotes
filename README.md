@@ -8,3 +8,8 @@ Supports:
 Screenshot:
 
 ![DateNotes screenshot](/datenotes-screenshot.png)
+
+
+APK:
+
+[DateNotes.apk](/app/DateNotes.apk)
