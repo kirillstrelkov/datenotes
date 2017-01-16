@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.datenotes.DateNote;
+import com.datenotes.data.UIDateNote;
 import com.datenotes.db.NotesContract.NoteEntry;
 
 import java.text.ParseException;
@@ -32,7 +32,7 @@ public class NoteIO {
         return notesIO;
     }
 
-    public List<DateNote> getDataFromDb() {
+    public List<UIDateNote> getDataFromDb() {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         String[] projection = {
                 NoteEntry._ID,
@@ -52,13 +52,13 @@ public class NoteIO {
                 sortOrder                                 // The sort order
         );
 
-        List<DateNote> notes = new LinkedList<>();
+        List<UIDateNote> notes = new LinkedList<>();
         while (cursor.moveToNext()) {
             String note = cursor.getString(cursor.getColumnIndexOrThrow(NoteEntry.COLUMN_NAME_NOTE));
             String dateAsString = cursor.getString(cursor.getColumnIndexOrThrow(NoteEntry.COLUMN_NAME_DATE));
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(NoteEntry._ID));
             try {
-                notes.add(new DateNote(note, SQLLITE_DATETIME_FORMAT.parse(dateAsString), id));
+                notes.add(new UIDateNote(note, SQLLITE_DATETIME_FORMAT.parse(dateAsString), id));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -68,7 +68,14 @@ public class NoteIO {
         return notes;
     }
 
-    public long addNoteToDb(DateNote note) {
+    public long deleteNote(UIDateNote note) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String[] args = {String.valueOf(note.getId())};
+        return db.delete(NoteEntry.TABLE_NAME, " _id = ?", args);
+    }
+
+    public long addNoteToDb(UIDateNote note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -78,7 +85,7 @@ public class NoteIO {
         return db.insert(NoteEntry.TABLE_NAME, null, values);
     }
 
-    public long updateNoteToDb(DateNote note) {
+    public long updateNoteToDb(UIDateNote note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -87,13 +94,5 @@ public class NoteIO {
 
         String[] args = {String.valueOf(note.getId())};
         return db.update(NoteEntry.TABLE_NAME, values, " _id = ?", args);
-    }
-
-    public void importNotes() {
-//        add to db
-    }
-
-    public void exportNotes() {
-//        save notes to disk
     }
 }

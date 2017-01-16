@@ -1,4 +1,6 @@
-package com.datenotes;
+package com.datenotes.helpers;
+
+import com.datenotes.data.UIDateNote;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -37,10 +39,10 @@ public class FileUtils {
         }
     }
 
-    public static void save(List<DateNote> notes, OutputStream out) throws IOException {
+    public static void save(List<UIDateNote> notes, OutputStream out) throws IOException {
         Appendable appendable = new PrintWriter(new OutputStreamWriter(out, ENCODING));
         CSVPrinter printer = new CSVPrinter(appendable, CSV_FORMAT);
-        for (DateNote note : notes) {
+        for (UIDateNote note : notes) {
             printer.print(note.getNote());
             printer.print(note.getFomattedDate());
             printer.println();
@@ -48,24 +50,24 @@ public class FileUtils {
         printer.close();
     }
 
-    public static void save(List<DateNote> notes, String path) throws IOException {
+    public static void save(List<UIDateNote> notes, String path) throws IOException {
         save(notes, new FileOutputStream(path));
     }
 
-    public static List<DateNote> getNotesFrom(InputStream in) throws IOException, ParseException {
-        List<DateNote> notes = new LinkedList<>();
+    public static List<UIDateNote> getNotesFrom(InputStream in) throws IOException, ParseException {
+        List<UIDateNote> notes = new LinkedList<>();
 
         CSVParser parser = new CSVParser(new InputStreamReader(in, ENCODING), CSV_FORMAT);
         for (CSVRecord csvRecord : parser) {
             if (csvRecord.getRecordNumber() > 1 && csvRecord.size() > 1) {
-                notes.add(new DateNote(csvRecord.get("note"), csvRecord.get("date")));
+                notes.add(new UIDateNote(csvRecord.get("note"), csvRecord.get("date")));
             }
         }
 
         return notes;
     }
 
-    public static List<DateNote> getNotesFromCSV(String path) throws IOException, ParseException {
+    public static List<UIDateNote> getNotesFromCSV(String path) throws IOException, ParseException {
         return getNotesFrom(new FileInputStream(path));
     }
 }

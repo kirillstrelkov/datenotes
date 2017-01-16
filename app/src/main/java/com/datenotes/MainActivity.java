@@ -13,7 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.datenotes.data.UIDateNote;
 import com.datenotes.db.NoteIO;
+import com.datenotes.helpers.FileUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private NoteIO noteIO;
     private ListView listView;
-    private List<DateNote> notes;
+    private List<UIDateNote> notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(view.getContext(), AddNote.class);
-                DateNote note = ((NoteListAdapter) adapterView.getAdapter()).getItem(i);
-                intent.putExtra(DateNote.KEY_DATE, note.getFomattedDate());
-                intent.putExtra(DateNote.KEY_NOTE, note.getNote());
-                intent.putExtra(DateNote.KEY_ID, note.getId());
+                UIDateNote note = ((NoteListAdapter) adapterView.getAdapter()).getItem(i);
+                intent.putExtra(UIDateNote.KEY_DATE, note.getFomattedDate());
+                intent.putExtra(UIDateNote.KEY_NOTE, note.getNote());
+                intent.putExtra(UIDateNote.KEY_ID, note.getId());
                 startActivityForResult(intent, AddNote.UPDATE_NOTE_ID);
             }
         });
@@ -92,13 +94,22 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case AddNote.ADD_NOTE_ID:
                 case AddNote.UPDATE_NOTE_ID:
-                    String note = data.getStringExtra(DateNote.KEY_NOTE);
-                    String date = data.getStringExtra(DateNote.KEY_DATE);
-                    long id = data.getLongExtra(DateNote.KEY_ID, DateNote.DEFAULT_ID);
+                    boolean toDelete = data.getBooleanExtra(UIDateNote.KEY_DELETE, false);
+                    String msg = data.getStringExtra(UIDateNote.KEY_NOTE);
+                    String date = data.getStringExtra(UIDateNote.KEY_DATE);
+                    long id = data.getLongExtra(UIDateNote.KEY_ID, UIDateNote.DEFAULT_ID);
+                    UIDateNote note = null;
                     try {
-                        saveNote(new DateNote(note, date, id), true);
+                        note = new UIDateNote(msg, date, id);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                    }
+                    if (note != null) {
+                        if (toDelete) {
+                            deleteNote(note);
+                        } else {
+                            saveNote(note, true);
+                        }
                     }
                     break;
                 case IMPORT_REQUEST_CODE:
@@ -113,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void importNotes(Uri uri) {
         try {
-            List<DateNote> importedNotes = FileUtils.getNotesFrom(getContentResolver().openInputStream(uri));
+            List<UIDateNote> importedNotes = FileUtils.getNotesFrom(getContentResolver().openInputStream(uri));
             String msg = String.format(getString(R.string.msg_notes_imported), importedNotes.size());
             long importedCount = 0;
-            for (DateNote n : importedNotes) {
+            for (UIDateNote n : importedNotes) {
                 if (saveNote(n, false)) {
                     importedCount++;
                 }
@@ -139,12 +150,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean saveNote(DateNote newNote, boolean showMsg) {
+    private void deleteNote(UIDateNote note) {
+        showToast(String.format(getString(R.string.msg_note_removed), note.getNote(), note.getFomattedDate()));
+        noteIO.deleteNote(note);
+        notes.remove(note);
+        reloadData();
+    }
+
+    private boolean saveNote(UIDateNote newNote, boolean showMsg) {
         if (notes.contains(newNote)) {
             showToast(String.format(getString(R.string.msg_note_duplicate), newNote.getNote(), newNote.getFomattedDate()));
             return false;
         }
-        boolean is_update = newNote.getId() != DateNote.DEFAULT_ID;
+        boolean is_update = newNote.getId() != UIDateNote.DEFAULT_ID;
         if (showMsg) {
             String msg;
             if (is_update) {
@@ -156,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (is_update) {
-            for (DateNote n : notes) {
+            for (UIDateNote n : notes) {
                 if (n.getId() == newNote.getId()) {
                     n.setNote(newNote.getNote());
                     n.setDate(newNote.getDate());

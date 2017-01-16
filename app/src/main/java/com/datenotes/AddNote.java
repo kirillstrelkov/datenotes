@@ -4,12 +4,15 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+
+import com.datenotes.data.UIDateNote;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,14 +24,16 @@ public class AddNote extends AppCompatActivity {
     private EditText textDate;
     private EditText textNote;
     private Button btnAdd;
+    private Button btnDelete;
     private long dateNoteID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        setContentView(R.layout.activity_note);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
         textDate = (EditText) findViewById(R.id.textDate);
         textNote = (EditText) findViewById(R.id.textNote);
         textDate.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +61,14 @@ public class AddNote extends AppCompatActivity {
         setDateToField();
 
         Intent intent = getIntent();
-        String note = intent.getStringExtra(DateNote.KEY_NOTE);
-        String date = intent.getStringExtra(DateNote.KEY_DATE);
-        dateNoteID = intent.getLongExtra(DateNote.KEY_ID, DateNote.DEFAULT_ID);
-        if (dateNoteID != DateNote.DEFAULT_ID) {
+        String note = intent.getStringExtra(UIDateNote.KEY_NOTE);
+        String date = intent.getStringExtra(UIDateNote.KEY_DATE);
+        dateNoteID = intent.getLongExtra(UIDateNote.KEY_ID, UIDateNote.DEFAULT_ID);
+        if (dateNoteID != UIDateNote.DEFAULT_ID) {
             textDate.setText(date);
             textNote.setText(note);
             btnAdd.setText(R.string.update_note);
+            btnDelete.setVisibility(View.VISIBLE);
         }
     }
 
@@ -73,7 +79,7 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setDateToField() {
-        textDate.setText(DateNote.DATE_TIME_FORMAT.format(calendar.getTime()));
+        textDate.setText(UIDateNote.DATE_TIME_FORMAT.format(calendar.getTime()));
     }
 
     private void setDate(int year, int month, int day) {
@@ -83,17 +89,29 @@ public class AddNote extends AppCompatActivity {
         setDateToField();
     }
 
+    protected void deleteNote(View view) {
+        Intent intent = getDateNoteIntent();
+        intent.putExtra(UIDateNote.KEY_DELETE, true);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     protected void goBack(View view) {
         setResult(RESULT_CANCELED);
         finish();
     }
 
     protected void addNewNote(View view) {
-        Intent intent = new Intent();
-        intent.putExtra(DateNote.KEY_NOTE, textNote.getText().toString());
-        intent.putExtra(DateNote.KEY_DATE, textDate.getText().toString());
-        intent.putExtra(DateNote.KEY_ID, dateNoteID);
+        Intent intent = getDateNoteIntent();
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private Intent getDateNoteIntent() {
+        Intent intent = new Intent();
+        intent.putExtra(UIDateNote.KEY_NOTE, textNote.getText().toString());
+        intent.putExtra(UIDateNote.KEY_DATE, textDate.getText().toString());
+        intent.putExtra(UIDateNote.KEY_ID, dateNoteID);
+        return intent;
     }
 }

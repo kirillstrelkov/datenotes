@@ -1,40 +1,21 @@
-package com.datenotes;
+package com.datenotes.data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateNote {
-    public static final String KEY_NOTE = "key_note";
-    public static final String KEY_DATE = "key_date";
-    public static final String KEY_ID = "key_id";
-    public static final long DEFAULT_ID = -1;
+class DateNote {
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
-    private String note;
-    private Date date;
-    private long id;
+    protected String note;
+    protected Date date;
 
-    public DateNote(String note) {
-        this(note, new Date());
-    }
-
-    public DateNote(String note, Date date) {
-        this(note, date, DEFAULT_ID);
-    }
-
-    public DateNote(String note, Date date, long id) {
+    DateNote(String note, Date date) {
         this.note = note;
         this.date = date;
-        this.id = id;
     }
 
-    public DateNote(String note, String date, long id) throws ParseException {
-        this(note, date);
-        this.id = id;
-    }
-
-    public DateNote(String note, String date) throws ParseException {
+    DateNote(String note, String date) throws ParseException {
         this(note, DATE_TIME_FORMAT.parse(date));
     }
 
@@ -52,10 +33,6 @@ public class DateNote {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFomattedDate() {

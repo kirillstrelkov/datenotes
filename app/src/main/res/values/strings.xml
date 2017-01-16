@@ -4,9 +4,11 @@
     <string name="action_export">Export</string>
     <string name="update_note">Update note</string>
     <string name="add_note">Add new note</string>
+    <string name="delete_note">Delete note</string>
     <string name="back">Back</string>
     <string name="msg_note_added">Note was added successfully:\n%1$s\n%2$s</string>
     <string name="msg_note_updated">Note was updated successfully:\n%1$s\n%2$s</string>
+    <string name="msg_note_removed">Note was removed successfully:\n%1$s\n%2$s</string>
     <string name="msg_note_duplicate">Duplicate note:\n%1$s\n%2$s</string>
     <string name="msg_notes_exported">%1$d notes were exported successfully</string>
     <string name="msg_notes_imported">%1$d notes were imported successfully</string>
