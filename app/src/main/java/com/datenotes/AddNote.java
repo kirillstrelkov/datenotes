@@ -2,8 +2,10 @@ package com.datenotes;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -88,11 +90,24 @@ public class AddNote extends AppCompatActivity {
         setDateToField();
     }
 
-    protected void deleteNote(View view) {
-        Intent intent = getDateNoteIntent();
-        intent.putExtra(UIDateNote.KEY_DELETE, true);
-        setResult(RESULT_OK, intent);
-        finish();
+    protected void deleteNote(final View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = getDateNoteIntent();
+                intent.putExtra(UIDateNote.KEY_DELETE, true);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                goBack(view);
+            }
+        });
+        builder.setMessage(R.string.dialog_delete_msg).setTitle(R.string.dialog_delete_title);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     protected void goBack(View view) {
