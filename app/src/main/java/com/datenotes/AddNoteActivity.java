@@ -18,7 +18,7 @@ import com.datenotes.data.UIDateNote;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddNote extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity {
     public static final int ADD_NOTE_ID = 1;
     public static final int UPDATE_NOTE_ID = 2;
     private Calendar calendar;

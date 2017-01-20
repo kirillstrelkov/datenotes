@@ -1,9 +1,6 @@
-package com.datenotes;
+package com.datenotes.helpers;
 
-import com.datenotes.data.UIDateNote;
-import com.datenotes.helpers.FileUtils;
-
-import junit.framework.Assert;
+import com.datenotes.data.Note;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,33 +11,34 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileUtilsTest {
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-    private static UIDateNote NOTE1;
-    private static UIDateNote NOTE2;
+    private static Note NOTE1;
+    private static Note NOTE2;
 
     @BeforeClass
     public static void init() throws ParseException {
-        NOTE1 = new UIDateNote("Message", "01:01 01.01.2016");
-        NOTE2 = new UIDateNote("Message\nMessage2", "12:12 11.11.2016");
+        NOTE1 = new Note("Message", "01:01 01.01.2016");
+        NOTE2 = new Note("Message\nMessage2", "12:12 11.11.2016");
     }
 
     @Test
     public void joinPaths() throws Exception {
         String path = FileUtils.joinPaths("/", "tmp");
-        Assert.assertEquals(path, "/tmp");
+        assertThat(path, is("/tmp"));
 
         path = FileUtils.joinPaths("/tmp", "out.csv");
-        Assert.assertEquals(path, "/tmp/out.csv");
+        assertThat(path, is("/tmp/out.csv"));
 
         path = FileUtils.joinPaths("/", "tmp", "out.csv");
-        Assert.assertEquals(path, "/tmp/out.csv");
+        assertThat(path, is("/tmp/out.csv"));
     }
 
     @Test
     public void saveSingleDateNote() throws Exception {
-        List<UIDateNote> notes = new LinkedList<>();
+        List<Note> notes = new LinkedList<>();
         notes.add(NOTE1);
 
         String path = FileUtils.joinPaths(new File(TMP_DIR).getPath(), "out.csv");
@@ -49,26 +47,26 @@ public class FileUtilsTest {
 
     @Test
     public void getsNotesFromFile() throws Exception {
-        List<UIDateNote> notes = new LinkedList<>();
+        List<Note> notes = new LinkedList<>();
         notes.add(NOTE1);
 
         String path = FileUtils.joinPaths(new File(TMP_DIR).getPath(), "out.csv");
         FileUtils.save(notes, path);
 
-        List<UIDateNote> readNotes = FileUtils.getNotesFromCSV(path);
-        org.junit.Assert.assertThat(readNotes, is(notes));
+        List<Note> readNotes = FileUtils.getNotesFromCSV(path);
+        assertThat(readNotes, is(notes));
     }
 
     @Test
     public void saveAndGetMultipleNotes() throws Exception {
-        List<UIDateNote> notes = new LinkedList<>();
+        List<Note> notes = new LinkedList<>();
         notes.add(NOTE1);
         notes.add(NOTE2);
 
         String path = FileUtils.joinPaths(new File(TMP_DIR).getPath(), "out.csv");
         FileUtils.save(notes, path);
 
-        List<UIDateNote> readNotes = FileUtils.getNotesFromCSV(path);
-        org.junit.Assert.assertThat(readNotes, is(notes));
+        List<Note> readNotes = FileUtils.getNotesFromCSV(path);
+        assertThat(readNotes, is(notes));
     }
 }

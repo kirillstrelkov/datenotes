@@ -1,4 +1,4 @@
-package com.datenotes;
+package com.datenotes.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,18 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.datenotes.data.UIDateNote;
+import com.datenotes.R;
+import com.datenotes.data.Note;
 
 import java.util.List;
 
-public class NoteListAdapter extends ArrayAdapter<UIDateNote> {
-    List<UIDateNote> notes;
+public class NotesAdapter extends ArrayAdapter<Note> {
+    List<Note> notes;
 
-    public NoteListAdapter(Context context, int resource) {
+    public NotesAdapter(Context context, int resource) {
         super(context, resource);
     }
 
-    public NoteListAdapter(Context context, int resource, List<UIDateNote> objects) {
+    public NotesAdapter(Context context, int resource, List<Note> objects) {
         super(context, resource, objects);
     }
 
@@ -32,7 +33,7 @@ public class NoteListAdapter extends ArrayAdapter<UIDateNote> {
             view = vi.inflate(R.layout.note_list_item, null);
         }
 
-        UIDateNote note = getItem(position);
+        Note note = getItem(position);
 
         if (note != null) {
             TextView tv_note = (TextView) view.findViewById(R.id.listItemNote);
@@ -50,7 +51,7 @@ public class NoteListAdapter extends ArrayAdapter<UIDateNote> {
         return view;
     }
 
-    public void updateAdapter(List<UIDateNote> notes) {
+    public void updateAdapter(List<Note> notes) {
         this.notes = notes;
         this.notifyDataSetChanged();
     }
