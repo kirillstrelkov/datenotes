@@ -13,8 +13,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.datenotes.data.UIDateNote;
+import com.datenotes.data.DaoSession;
+import com.datenotes.data.List;
+import com.datenotes.data.Note;
+import com.datenotes.data.NoteDao;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,7 +30,9 @@ public class AddNoteActivity extends AppCompatActivity {
     private EditText textNote;
     private Button btnAdd;
     private Button btnDelete;
-    private long dateNoteID;
+    private NoteDao noteDao;
+    private List list;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +67,15 @@ public class AddNoteActivity extends AppCompatActivity {
         calendar.setTime(new Date());
         setDateToField();
 
+        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        noteDao = daoSession.getNoteDao();
+
         Intent intent = getIntent();
-        String note = intent.getStringExtra(UIDateNote.KEY_NOTE);
-        String date = intent.getStringExtra(UIDateNote.KEY_DATE);
-        dateNoteID = intent.getLongExtra(UIDateNote.KEY_ID, UIDateNote.DEFAULT_ID);
-        if (dateNoteID != UIDateNote.DEFAULT_ID) {
-            textDate.setText(date);
-            textNote.setText(note);
+        note = intent.getParcelableExtra(Note.KEY);
+        list = intent.getParcelableExtra(List.KEY);
+        if (note != null) {
+            textDate.setText(note.getFomattedDate());
+            textNote.setText(note.getNote());
             btnAdd.setText(R.string.update_note);
             btnDelete.setVisibility(View.VISIBLE);
         }
@@ -80,7 +88,7 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     private void setDateToField() {
-        textDate.setText(UIDateNote.DATE_TIME_FORMAT.format(calendar.getTime()));
+        textDate.setText(Note.DATE_TIME_FORMAT.format(calendar.getTime()));
     }
 
     private void setDate(int year, int month, int day) {
@@ -95,7 +103,7 @@ public class AddNoteActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = getDateNoteIntent();
-                intent.putExtra(UIDateNote.KEY_DELETE, true);
+                intent.putExtra(Note.KEY_DELETE, true);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -123,9 +131,22 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private Intent getDateNoteIntent() {
         Intent intent = new Intent();
-        intent.putExtra(UIDateNote.KEY_NOTE, textNote.getText().toString());
-        intent.putExtra(UIDateNote.KEY_DATE, textDate.getText().toString());
-        intent.putExtra(UIDateNote.KEY_ID, dateNoteID);
+        try {
+            if (note == null) {
+                note = new Note(
+                        null,
+                        textNote.getText().toString(),
+                        textDate.getText().toString(),
+                        list.getId()
+                );
+            } else {
+                note.setDate(textDate.getText().toString());
+                note.setNote(textNote.getText().toString());
+            }
+            intent.putExtra(Note.KEY, note);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return intent;
     }
 }

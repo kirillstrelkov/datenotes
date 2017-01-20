@@ -12,14 +12,11 @@ import com.datenotes.R;
 import com.datenotes.data.List;
 
 public class ListsAdapter extends ArrayAdapter<List> {
-    java.util.List list;
+    java.util.List<List> lists;
 
-    public ListsAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public ListsAdapter(Context context, int resource, java.util.List objects) {
-        super(context, resource, objects);
+    public ListsAdapter(Context context, int resource, java.util.List<List> lists) {
+        super(context, resource, lists);
+        this.lists = lists;
     }
 
     @NonNull
@@ -44,8 +41,8 @@ public class ListsAdapter extends ArrayAdapter<List> {
         return view;
     }
 
-    public void updateAdapter(java.util.List list) {
-        this.list = list;
+    public void updateAdapter(java.util.List<List> lists) {
+        this.lists = lists;
         this.notifyDataSetChanged();
     }
 }

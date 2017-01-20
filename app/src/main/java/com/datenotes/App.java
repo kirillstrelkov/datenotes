@@ -1,8 +1,25 @@
 package com.datenotes;
 
-/**
- * Created by kirill on 18.01.17.
- */
+import android.app.Application;
 
-public class App {
+import com.datenotes.data.DaoMaster;
+import com.datenotes.data.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
+
+public class App extends Application {
+    private DaoSession daoSession;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
+        Database db = helper.getWritableDb();
+        daoSession = new DaoMaster(db).newSession();
+    }
+
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
 }

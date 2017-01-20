@@ -15,8 +15,12 @@
     <string name="msg_failed_export">Failed to export notes</string>
     <string name="msg_failed_import">Failed to import notes</string>
     <!--dialogs:-->
+    <string name="dialog_create_list">Create new list</string>
     <string name="dialog_delete">Yes, delete it</string>
     <string name="dialog_cancel">No, keep it</string>
     <string name="dialog_delete_msg">Are you sure you want to delete the note?</string>
     <string name="dialog_delete_title">Delete confirmation</string>
+    <!--activities-->
+    <string name="title_activity_notes_list">ListActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

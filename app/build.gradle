@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 22
@@ -28,5 +38,6 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-csv:1.4'
+    compile 'org.greenrobot:greendao:3.2.0'
     testCompile 'junit:junit:4.12'
 }
