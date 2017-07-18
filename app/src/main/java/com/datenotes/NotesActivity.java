@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -41,17 +42,20 @@ public class NotesActivity extends AppCompatActivity {
         list.__setDaoSession(daoSession);
         initialListHash = list.hashCode();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_notes);
         setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+        supportActionBar.setTitle(list.getName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), AddNoteActivity.class);
+                Intent intent = new Intent(view.getContext(), NoteActivity.class);
                 intent.putExtra(List.KEY, list);
-                startActivityForResult(intent, AddNoteActivity.ADD_NOTE_ID);
+                startActivityForResult(intent, NoteActivity.ADD_NOTE_ID);
             }
         });
 
@@ -62,19 +66,19 @@ public class NotesActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(view.getContext(), AddNoteActivity.class);
+                Intent intent = new Intent(view.getContext(), NoteActivity.class);
 
                 Note note = ((NotesAdapter) adapterView.getAdapter()).getItem(i);
                 intent.putExtra(Note.KEY, note);
 
-                startActivityForResult(intent, AddNoteActivity.UPDATE_NOTE_ID);
+                startActivityForResult(intent, NoteActivity.UPDATE_NOTE_ID);
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_notes, menu);
         return true;
     }
 
@@ -100,8 +104,8 @@ public class NotesActivity extends AppCompatActivity {
             Uri uri = data.getData();
 
             switch (requestCode) {
-                case AddNoteActivity.ADD_NOTE_ID:
-                case AddNoteActivity.UPDATE_NOTE_ID:
+                case NoteActivity.ADD_NOTE_ID:
+                case NoteActivity.UPDATE_NOTE_ID:
                     Note note = data.getParcelableExtra(Note.KEY);
                     boolean toDelete = data.getBooleanExtra(Note.KEY_DELETE, false);
                     if (note != null) {
@@ -120,6 +124,12 @@ public class NotesActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void importNotes(Uri uri) {

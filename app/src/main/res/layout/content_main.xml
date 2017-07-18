@@ -11,11 +11,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.datenotes.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.datenotes.MyListsActivity"
+    tools:showIn="@layout/activity_my_lists">
 
     <TextView
-        android:text="No lists, please create one"
+        android:text="@string/msg_no_lists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtNoLists"

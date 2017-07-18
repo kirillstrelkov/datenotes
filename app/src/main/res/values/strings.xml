@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">DateNotes</string>
+    <string name="app_name" translatable="false">DateNotes</string>
     <string name="action_import">Import</string>
     <string name="action_export">Export</string>
     <string name="update_note">Update note</string>
     <string name="add_note">Add new note</string>
     <string name="delete_note">Delete note</string>
     <string name="back">Back</string>
+    <!-- messages: -->
     <string name="msg_note_added">Note was added successfully:\n%1$s\n%2$s</string>
     <string name="msg_note_updated">Note was updated successfully:\n%1$s\n%2$s</string>
     <string name="msg_note_removed">Note was removed successfully:\n%1$s\n%2$s</string>
@@ -14,13 +15,14 @@
     <string name="msg_notes_imported">%1$d notes were imported successfully</string>
     <string name="msg_failed_export">Failed to export notes</string>
     <string name="msg_failed_import">Failed to import notes</string>
-    <!--dialogs:-->
+    <string name="msg_no_lists">No lists, please create one</string>
+    <!-- dialogs: -->
     <string name="dialog_create_list">Create new list</string>
     <string name="dialog_delete">Yes, delete it</string>
     <string name="dialog_cancel">No, keep it</string>
     <string name="dialog_delete_msg">Are you sure you want to delete the note?</string>
     <string name="dialog_delete_title">Delete confirmation</string>
-    <!--activities-->
-    <string name="title_activity_notes_list">ListActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="dialig_new_list">Enter name for new list</string>
+    <!-- activities-->
+    <string name="my_lists">My lists</string>
 </resources>

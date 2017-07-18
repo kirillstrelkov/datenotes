@@ -18,7 +18,7 @@ import com.datenotes.adapters.ListsAdapter;
 import com.datenotes.data.List;
 import com.datenotes.data.ListDao;
 
-public class MainActivity extends AppCompatActivity {
+public class MyListsActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 21;
 
     private java.util.List<List> lists;
@@ -30,13 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_my_lists);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final MainActivity thisActivity = this;
+        final MyListsActivity thisActivity = this;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setBackgroundTintList(this.getResources().getColorStateList(R.color.colorPrimary));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

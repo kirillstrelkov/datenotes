@@ -1,0 +1,26 @@
+<resources>
+    <string name="action_import">Импорт</string>
+    <string name="action_export">Экспорт</string>
+    <string name="update_note">Обновить заметку</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="delete_note">Удалить заметку</string>
+    <string name="back">Назад</string>
+    <string name="msg_note_added">Заметка была добавлена:\n%1$s\n%2$s</string>
+    <string name="msg_note_updated">Заметка была обновлена:\n%1$s\n%2$s</string>
+    <string name="msg_note_removed">Заметка была удалена:\n%1$s\n%2$s</string>
+    <string name="msg_note_duplicate">Заметка уже существует:\n%1$s\n%2$s</string>
+    <string name="msg_notes_exported">%1$d заметок было экспортировано</string>
+    <string name="msg_notes_imported">%1$d заметок было импортировано</string>
+    <string name="msg_failed_export">Ошибка при экспорте заметок</string>
+    <string name="msg_failed_import">Ошибка при импорте заметок</string>
+    <!--dialogs:-->
+    <string name="dialog_create_list">Добавить новый список</string>
+    <string name="dialog_delete">Да, удалить её</string>
+    <string name="dialog_cancel">Нет, оставить её</string>
+    <string name="dialog_delete_msg">Хотите ли вы удалить заметку?</string>
+    <string name="dialog_delete_title">Подтвержение удаления</string>
+    <string name="my_lists">Мои списки</string>
+    <string name="msg_no_lists">Нет списков</string>
+    <string name="dialig_new_list">Введите имя для нового списка</string>
+    <!--activities-->
+</resources>

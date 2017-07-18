@@ -5,32 +5,30 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.datenotes.data.DaoSession;
 import com.datenotes.data.List;
 import com.datenotes.data.Note;
-import com.datenotes.data.NoteDao;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddNoteActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity {
     public static final int ADD_NOTE_ID = 1;
     public static final int UPDATE_NOTE_ID = 2;
     private Calendar calendar;
     private EditText textDate;
     private EditText textNote;
-    private Button btnAdd;
-    private Button btnDelete;
-    private NoteDao noteDao;
     private List list;
     private Note note;
 
@@ -39,8 +37,12 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        btnDelete = (Button) findViewById(R.id.btnDelete);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar_note));
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setDisplayShowHomeEnabled(true);
+        supportActionBar.setDisplayShowTitleEnabled(false);
+
         textDate = (EditText) findViewById(R.id.textDate);
         textNote = (EditText) findViewById(R.id.textNote);
         textDate.setOnClickListener(new View.OnClickListener() {
@@ -67,17 +69,12 @@ public class AddNoteActivity extends AppCompatActivity {
         calendar.setTime(new Date());
         setDateToField();
 
-        DaoSession daoSession = ((App) getApplication()).getDaoSession();
-        noteDao = daoSession.getNoteDao();
-
         Intent intent = getIntent();
         note = intent.getParcelableExtra(Note.KEY);
         list = intent.getParcelableExtra(List.KEY);
         if (note != null) {
             textDate.setText(note.getFomattedDate());
             textNote.setText(note.getNote());
-            btnAdd.setText(R.string.update_note);
-            btnDelete.setVisibility(View.VISIBLE);
         }
     }
 
@@ -98,8 +95,8 @@ public class AddNoteActivity extends AppCompatActivity {
         setDateToField();
     }
 
-    protected void deleteNote(final View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    protected void deleteNote() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = getDateNoteIntent();
@@ -110,7 +107,7 @@ public class AddNoteActivity extends AppCompatActivity {
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                goBack(view);
+                goBack();
             }
         });
         builder.setMessage(R.string.dialog_delete_msg).setTitle(R.string.dialog_delete_title);
@@ -118,12 +115,46 @@ public class AddNoteActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected void goBack(View view) {
+    protected void goBack() {
         setResult(RESULT_CANCELED);
         finish();
     }
 
-    protected void addNewNote(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_note, menu);
+        if (note != null) {
+            menu.findItem(R.id.action_note_add).setTitle(R.string.update_note);
+            menu.findItem(R.id.action_note_delete).setVisible(true);
+        }
+        this.invalidateOptionsMenu();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_note_add:
+                addNewNote();
+                break;
+            case R.id.action_note_delete:
+                deleteNote();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        setResult(RESULT_CANCELED);
+        onBackPressed();
+        return true;
+    }
+
+    protected void addNewNote() {
         Intent intent = getDateNoteIntent();
         setResult(RESULT_OK, intent);
         finish();
