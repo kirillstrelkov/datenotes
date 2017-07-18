@@ -110,7 +110,7 @@ public class NoteActivity extends AppCompatActivity {
                 goBack();
             }
         });
-        builder.setMessage(R.string.dialog_delete_msg).setTitle(R.string.dialog_delete_title);
+        builder.setMessage(R.string.dialog_delete_note_msg).setTitle(R.string.dialog_delete_title);
         AlertDialog dialog = builder.create();
         dialog.show();
     }

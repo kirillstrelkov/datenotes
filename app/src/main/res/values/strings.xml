@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">DateNotes</string>
-    <string name="action_import">Import</string>
-    <string name="action_export">Export</string>
+    <string name="action_list_import">Import</string>
+    <string name="action_list_export">Export</string>
+    <string name="action_list_delete">Delete</string>
     <string name="update_note">Update note</string>
     <string name="add_note">Add new note</string>
     <string name="delete_note">Delete note</string>
@@ -20,7 +21,8 @@
     <string name="dialog_create_list">Create new list</string>
     <string name="dialog_delete">Yes, delete it</string>
     <string name="dialog_cancel">No, keep it</string>
-    <string name="dialog_delete_msg">Are you sure you want to delete the note?</string>
+    <string name="dialog_delete_note_msg">Are you sure you want to delete the note?</string>
+    <string name="dialog_delete_list_msg">Are you sure you want to delete the list?</string>
     <string name="dialog_delete_title">Delete confirmation</string>
     <string name="dialig_new_list">Enter name for new list</string>
     <!-- activities-->

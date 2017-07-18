@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NoteActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".NotesActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ListWithNotesActivity" android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,10 +1,12 @@
 package com.datenotes;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -22,7 +24,7 @@ import com.datenotes.helpers.FileUtils;
 
 import java.io.IOException;
 
-public class NotesActivity extends AppCompatActivity {
+public class ListWithNotesActivity extends AppCompatActivity {
     private static final int IMPORT_REQUEST_CODE = 42;
     private static final int EXPORT_REQUEST_CODE = 43;
 
@@ -87,11 +89,14 @@ public class NotesActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_import:
+            case R.id.action_list_import:
                 createImportActivity();
                 break;
-            case R.id.action_export:
+            case R.id.action_list_export:
                 createExportActivity();
+                break;
+            case R.id.action_list_delete:
+                deleteList();
                 break;
         }
 
@@ -219,6 +224,24 @@ public class NotesActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra(List.KEY, list);
         return intent;
+    }
+
+    private void deleteList() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                list.delete();
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.setMessage(R.string.dialog_delete_list_msg).setTitle(R.string.dialog_delete_title);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

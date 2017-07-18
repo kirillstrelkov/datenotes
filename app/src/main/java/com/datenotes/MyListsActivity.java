@@ -74,7 +74,7 @@ public class MyListsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(view.getContext(), NotesActivity.class);
+                Intent intent = new Intent(view.getContext(), ListWithNotesActivity.class);
                 List list = ((ListsAdapter) adapterView.getAdapter()).getItem(i);
                 intent.putExtra(List.KEY, list);
                 startActivityForResult(intent, REQUEST_CODE);
@@ -105,5 +105,4 @@ public class MyListsActivity extends AppCompatActivity {
             listsAdapter.updateAdapter(lists);
         }
     }
-
 }
