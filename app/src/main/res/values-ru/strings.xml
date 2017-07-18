@@ -24,5 +24,7 @@
     <string name="dialig_new_list">Введите имя для нового списка</string>
     <string name="action_list_delete">Удалить список</string>
     <string name="dialog_delete_list_msg">Хотите ли вы удалить список?</string>
+    <string name="hint_date">Дата</string>
+    <string name="hint_note">Заметка</string>
     <!--activities-->
 </resources>

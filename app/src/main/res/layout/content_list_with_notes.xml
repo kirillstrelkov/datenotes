@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.datenotes.ListWithNotesActivity"
-    tools:showIn="@layout/activity_notes">
+    tools:showIn="@layout/activity_list_with_notes">
 
     <ListView
         android:id="@+id/listView"

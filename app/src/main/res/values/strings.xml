@@ -17,6 +17,9 @@
     <string name="msg_failed_export">Failed to export notes</string>
     <string name="msg_failed_import">Failed to import notes</string>
     <string name="msg_no_lists">No lists, please create one</string>
+    <!-- hints: -->
+    <string name="hint_note">Note</string>
+    <string name="hint_date">Date</string>
     <!-- dialogs: -->
     <string name="dialog_create_list">Create new list</string>
     <string name="dialog_delete">Yes, delete it</string>
